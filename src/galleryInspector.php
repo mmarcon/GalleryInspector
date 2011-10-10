@@ -163,8 +163,7 @@
             return preg_match($pattern, $url);
         }
         
-        public function replyWithAlbums()
-        {
+        public function replyWithAlbums() {
             $t0 = microtime(true);
             $albums = $this->getAlbums();
             $response = array();
@@ -209,6 +208,8 @@
         }
     }
     
+    //Uncomment the following lines to test the class.
+    /*
     function galleryInspectorTest() {
         try {
             $gi = new GalleryInspector ('localhost', 'db_user', 'db_pwd', 'db_name');
@@ -221,4 +222,5 @@
         }
     }
     galleryInspectorTest();
+    */
 ?>
