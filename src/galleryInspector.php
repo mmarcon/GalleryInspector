@@ -138,7 +138,7 @@
         private function getAllPhotos() {
             $q = "SELECT id, relative_path_cache, title, parent_id, thumb_height, thumb_width FROM " . $this->itemsTable .
                  " WHERE type = 'photo'";
-            if ($result = $this->conn->query ($q)) {                
+            if ($result = $this->conn->query ($q)) {
                 $results = array();
                 //Get all the albums and put them in an associative array
                 //where the key is the item id
@@ -158,6 +158,19 @@
             }
         }
         
+        private function getLastPhotoInsertionDate() {
+            $q = "SELECT updated FROM " . $this->itemsTable . " ORDER BY updated DESC LIMIT 1";
+            if ($result = $this->conn->query ($q)) {
+                $row = $result->fetch_assoc();
+                $date = date("d/m/Y", $row['updated']);
+                $result->close();
+                return $date;
+            }
+            else {
+                throw new Exception ('Query error');
+            }
+        }
+        
         private static function isURL ($url) {
             $pattern = '/^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&amp;?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/';
             return preg_match($pattern, $url);
@@ -170,6 +183,7 @@
             $response ['albums'] = $albums;
             //$response ['phpVersion'] = phpversion();
             $response ['executionTime'] = microtime(true) - $t0;
+            $response ['lastUpdated'] = $this->getLastPhotoInsertionDate();
             switch ($this->format) {
                 case self::JSON:
                     header ('Cache-Control: no-cache, must-revalidate');
@@ -208,19 +222,20 @@
         }
     }
     
-    //Uncomment the following lines to test the class.
     /*
     function galleryInspectorTest() {
         try {
-            $gi = new GalleryInspector ('localhost', 'db_user', 'db_pwd', 'db_name');
+            $gi = new GalleryInspector ('localhost', 'albertob_gallery', 'my@gallery', 'albertob_gallery');
             $gi->setItemsTable ('g3_items');
-            $gi->setGalleryURL('http://yourwebsite.com/gallery');
+            $gi->setGalleryURL('http://albertobarbaresco.com/incostruzione/gallery');
             $gi->replyWithAlbums();
         }
         catch (Exception $e) {
             die ($e);
         }
     }
+    //echo '<pre>';
     galleryInspectorTest();
+    //echo '</pre>';
     */
 ?>
