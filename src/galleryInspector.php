@@ -225,9 +225,9 @@
     /*
     function galleryInspectorTest() {
         try {
-            $gi = new GalleryInspector ('localhost', 'albertob_gallery', 'my@gallery', 'albertob_gallery');
+            $gi = new GalleryInspector ('localhost', 'my@user', 'my@password', 'my@db');
             $gi->setItemsTable ('g3_items');
-            $gi->setGalleryURL('http://albertobarbaresco.com/incostruzione/gallery');
+            $gi->setGalleryURL('http://website.com//gallery');
             $gi->replyWithAlbums();
         }
         catch (Exception $e) {
